@@ -1,0 +1,15 @@
+# .env
+# .venv/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# pyproject.toml
+# poetry.lock
+# certs/
+# celerybeat-schedule.bak
+# celerybeat-schedule.dat
+# celerybeat-schedule.dir
+# celerybeat-schedule-shm
+# celerybeat-schedule-wal
