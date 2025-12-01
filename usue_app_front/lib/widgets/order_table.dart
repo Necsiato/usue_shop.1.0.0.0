@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/order_model.dart';
-import '../utils/currency_formatter.dart';
+import 'package:usue_app_front/models/order_model.dart';
+import 'package:usue_app_front/utils/currency_formatter.dart';
 import 'status_badge.dart';
 
 class OrdersDataTable extends StatelessWidget {
@@ -17,11 +17,11 @@ class OrdersDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaginatedDataTable(
-      header: const Text('Заказы (общий список)'),
+      header: const Text('Заказы (управление статусами)'),
       columns: const [
         DataColumn(label: Text('ID')),
-        DataColumn(label: Text('Покупатель')),
-        DataColumn(label: Text('Состав')),
+        DataColumn(label: Text('Клиент')),
+        DataColumn(label: Text('Товары')),
         DataColumn(label: Text('Сумма')),
         DataColumn(label: Text('Статус')),
       ],

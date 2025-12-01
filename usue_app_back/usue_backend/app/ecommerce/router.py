@@ -602,6 +602,15 @@ async def update_user(
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already taken")
         user.username = payload.username
 
+    if payload.email and payload.email != user.email:
+        email_exists = await session.execute(select(User).where(User.email == payload.email))
+        if email_exists.scalar_one_or_none():
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+        user.email = payload.email
+
+    if payload.role and payload.role.value != user.role:
+        user.role = payload.role.value
+
     if payload.password:
         user.password_hash = hash_password(payload.password)
 

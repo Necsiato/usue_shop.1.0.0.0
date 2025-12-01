@@ -1,8 +1,11 @@
-class AppConfig {
+﻿class AppConfig {
   AppConfig._();
 
   static const String backendIp = '192.168.0.169';
   static const int backendPort = 8090;
+
+  // Бренд проекта (перевод звучит по-русски)
+  static const String brandTitle = 'Эвергрин Лабс';
 
   static const bool useBackend = true;
   static const bool allowInsecureCertificates = true;
@@ -12,5 +15,6 @@ class AppConfig {
 
   static Uri uri(String path) => Uri.parse('$baseUrl$path');
 
-  static const double baseFontSize = 14;
+  // Base font size for the app UI.
+  static const double baseFontSize = 15;
 }

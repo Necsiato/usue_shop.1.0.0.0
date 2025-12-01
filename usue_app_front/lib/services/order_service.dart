@@ -1,13 +1,13 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../config/app_config.dart';
-import '../models/cart_item.dart';
-import '../models/order_model.dart';
-import '../models/product_model.dart';
-import '../models/user_model.dart';
-import '../sample_data/sample_catalog.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/cart_item.dart';
+import 'package:usue_app_front/models/order_model.dart';
+import 'package:usue_app_front/models/product_model.dart';
+import 'package:usue_app_front/models/user_model.dart';
+import 'package:usue_app_front/sample_data/sample_catalog.dart';
 import 'http_client_factory.dart';
 
 class OrderService {
@@ -24,7 +24,7 @@ class OrderService {
       final data = jsonDecode(response.body) as List<dynamic>;
       return data.map((json) => _fromJson(json as Map<String, dynamic>)).toList();
     }
-    throw Exception('Не удалось получить ваши заказы, попробуйте позже.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РІР°С€Рё Р·Р°РєР°Р·С‹, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.');
   }
 
   Future<List<OrderModel>> loadAllOrders() async {
@@ -36,7 +36,7 @@ class OrderService {
       final data = jsonDecode(response.body) as List<dynamic>;
       return data.map((json) => _fromJson(json as Map<String, dynamic>)).toList();
     }
-    throw Exception('Не удалось загрузить список заказов, попробуйте позже.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє Р·Р°РєР°Р·РѕРІ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.');
   }
 
   Future<OrderModel> createOrder({
@@ -71,7 +71,7 @@ class OrderService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return _fromJson(data);
     }
-    throw Exception('Не удалось оформить заказ.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·.');
   }
 
   Future<OrderModel> updateOrderStatus({
@@ -92,7 +92,7 @@ class OrderService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return _fromJson(data);
     }
-    throw Exception('Не удалось изменить статус заказа.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ РёР·РјРµРЅРёС‚СЊ СЃС‚Р°С‚СѓСЃ Р·Р°РєР°Р·Р°.');
   }
 
   String _statusToApi(OrderStatus status) {

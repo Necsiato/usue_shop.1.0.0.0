@@ -11,7 +11,7 @@ extension OrderStatusExt on OrderStatus {
       case OrderStatus.inProgress:
         return 'В работе';
       case OrderStatus.done:
-        return 'Завершен';
+        return 'Готов';
     }
   }
 }

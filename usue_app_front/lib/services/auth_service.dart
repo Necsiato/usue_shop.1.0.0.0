@@ -1,10 +1,10 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../config/app_config.dart';
-import '../models/user_model.dart';
-import '../sample_data/sample_catalog.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/user_model.dart';
+import 'package:usue_app_front/sample_data/sample_catalog.dart';
 import 'http_client_factory.dart';
 
 class AuthService {
@@ -20,7 +20,7 @@ class AuthService {
       if (login == 'user' && password == 'user') {
         return SampleCatalog.demoUsers.first;
       }
-      throw Exception('Неверный логин или пароль');
+      throw Exception('РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ');
     }
     final response = await _client.post(
       AppConfig.uri('/auth/login'),
@@ -31,7 +31,7 @@ class AuthService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return UserModel.fromJson(data['user'] as Map<String, dynamic>);
     }
-    throw Exception('Не удалось войти. Проверьте данные и попробуйте снова.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ РІРѕР№С‚Рё. РџСЂРѕРІРµСЂСЊС‚Рµ РґР°РЅРЅС‹Рµ Рё РїРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.');
   }
 
   Future<UserModel> register({
@@ -57,7 +57,7 @@ class AuthService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return UserModel.fromJson(data['user'] as Map<String, dynamic>);
     }
-    throw Exception('Не удалось зарегистрироваться.');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ.');
   }
 
   Future<UserModel?> fetchCurrentUser() async {

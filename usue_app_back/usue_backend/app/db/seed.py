@@ -59,32 +59,32 @@ PRODUCT_MEDIA = {
 CATEGORIES_SOURCE = [
     {
         "slug": "smart-home",
-        "title": "Smart Home",
-        "description": "Controllers, sensors and lighting for efficient homes.",
+        "title": "Умный дом",
+        "description": "Контроллеры, датчики, сценарии и освещение для дома.",
         "hero_image": CATEGORY_MEDIA["smart-home"],
     },
     {
         "slug": "eco-transport",
-        "title": "Eco Transport",
-        "description": "Urban bikes, scooters and compact mobility gear.",
+        "title": "Эко-транспорт",
+        "description": "Электробайки, самокаты и городская мобильность.",
         "hero_image": CATEGORY_MEDIA["eco-transport"],
     },
     {
         "slug": "water-care",
-        "title": "Water Care",
-        "description": "Purifiers, filters and water quality diagnostics.",
+        "title": "Чистая вода",
+        "description": "Фильтры, очистители и диагностика качества воды.",
         "hero_image": CATEGORY_MEDIA["water-care"],
     },
     {
         "slug": "zero-waste",
-        "title": "Zero Waste",
-        "description": "Reusable accessories, packaging and kitchen kits.",
+        "title": "Zero waste",
+        "description": "Многоразовые аксессуары, упаковка и кухонные наборы.",
         "hero_image": CATEGORY_MEDIA["zero-waste"],
     },
     {
         "slug": "urban-farming",
-        "title": "Urban Farming",
-        "description": "Indoor gardens, grow-lights and hydroponic kits.",
+        "title": "Городское фермерство",
+        "description": "Домашние грядки, фитолампы и наборы для гидропоники.",
         "hero_image": CATEGORY_MEDIA["urban-farming"],
     },
 ]
@@ -93,7 +93,7 @@ SERVICES_SOURCE = [
     {
         "id": "install-smart-home",
         "title": "Монтаж умного дома",
-        "description": "Выезд инженера, подбор сценариев, настройка шлюзов и датчиков.",
+        "description": "Выезд инженера, настройка сценариев, подключение датчиков и шлюзов.",
         "price": 14990,
         "status": "in_progress",
         "category": "smart-home",
@@ -101,8 +101,8 @@ SERVICES_SOURCE = [
     },
     {
         "id": "eco-audit",
-        "title": "Эко-аудит квартиры",
-        "description": "Диагностика расхода энергии и воды, подбор экономичных решений.",
+        "title": "Эко-аудит помещений",
+        "description": "Проверка потребления энергии и ресурсов, подбор решений по экономии.",
         "price": 12990,
         "status": "new",
         "category": "smart-home",
@@ -110,8 +110,8 @@ SERVICES_SOURCE = [
     },
     {
         "id": "bike-service",
-        "title": "Сервис городской техники",
-        "description": "Настройка электровелосипедов и самокатов, диагностика батарей.",
+        "title": "Сервис эко-техники",
+        "description": "Настройка и диагностика электровелосипедов и самокатов, проверка батарей.",
         "price": 7990,
         "status": "new",
         "category": "eco-transport",
@@ -120,7 +120,7 @@ SERVICES_SOURCE = [
     {
         "id": "water-lab",
         "title": "Лаборатория воды",
-        "description": "Забор проб, анализ состава и подбор фильтров под дом/офис.",
+        "description": "Отбор проб, анализ качества и рекомендации по фильтрации/очистке.",
         "price": 9990,
         "status": "new",
         "category": "water-care",
@@ -128,8 +128,8 @@ SERVICES_SOURCE = [
     },
     {
         "id": "urban-garden",
-        "title": "Городской огород под ключ",
-        "description": "Проектирование гидропонных систем, подсветка, запуск ухода.",
+        "title": "Городской мини-огород",
+        "description": "Подбор домашних грядок: фитолампы, гидропоника, питательные растворы.",
         "price": 18990,
         "status": "in_progress",
         "category": "urban-farming",
@@ -137,8 +137,8 @@ SERVICES_SOURCE = [
     },
     {
         "id": "zero-waste-kit",
-        "title": "Zero-waste внедрение",
-        "description": "Переход кафе/офиса на многоразовую тару и раздельный сбор.",
+        "title": "Zero waste-набор",
+        "description": "Многоразовые бутылки/контейнеры, эко-упаковка и сумки для дома и офиса.",
         "price": 15990,
         "status": "new",
         "category": "zero-waste",
@@ -155,8 +155,8 @@ SERVICES_SOURCE = [
     },
     {
         "id": "rapid-support",
-        "title": "Экстренный выезд инженера",
-        "description": "24/7 поддержка для B2B-клиентов, восстановление умных систем.",
+        "title": "Срочная поддержка",
+        "description": "24/7 консультации для B2B-клиентов, удалённые проверки и диагностика.",
         "price": 11990,
         "status": "in_progress",
         "category": "smart-home",
@@ -167,17 +167,17 @@ SERVICES_SOURCE = [
 
 def _build_products(category_map: Dict[str, Category]) -> List[Product]:
     base_specs = [
-        {"Power": "USB-C", "Warranty": "24 months"},
-        {"Material": "Aluminium", "Warranty": "12 months"},
-        {"Memory": "64 MB", "Display": "LED"},
-        {"Certification": "CE/FCC", "Compatible": "iOS/Android"},
-        {"Edition": "2025", "Manufacturer": "USUE"},
+        {"Питание": "USB-C", "Гарантия": "24 месяца"},
+        {"Материал": "Алюминий", "Гарантия": "12 месяцев"},
+        {"Память": "64 МБ", "Экран": "LED"},
+        {"Сертификация": "CE/FCC", "Совместимость": "iOS/Android"},
+        {"Серия": "2025", "Производитель": "USUE"},
     ]
     products: List[Product] = []
     for seed in CATEGORIES_SOURCE:
         category = category_map[seed["slug"]]
         for index in range(5):
-            slug = seed["slug"].replace("-", "_")
+            slug = seed["slug"].replace("-", "_")  # ASCII для путей
             product_id = f"{slug}_{index + 1}"
             image_path = f"{MEDIA_BASE_URL}/products/{slug}_{index + 1}.png"
             products.append(
@@ -185,7 +185,7 @@ def _build_products(category_map: Dict[str, Category]) -> List[Product]:
                     id=product_id,
                     category_id=category.id,
                     title=f'{seed["title"]} {index + 1}',
-                    description=f'{seed["description"]} Edition #{index + 1}.',
+                    description=f'{seed["description"]} Серия #{index + 1}.',
                     price=1990 + (index * 1500),
                     image_urls=[image_path],
                     characteristics=base_specs[index % len(base_specs)],
@@ -230,12 +230,12 @@ async def seed_database() -> None:
         demo_users: List[User] = [
             User(
                 username="user",
-                full_name="Demo User",
+                full_name="Демо пользователь",
                 email="user@usue.app",
                 password_hash=hash_password("user"),
                 role=UserRole.CUSTOMER.value,
                 phone="+7 900 100-0000",
-                address="Ekaterinburg",
+                address="Екатеринбург",
             )
         ]
         for index in range(1, 200):
@@ -243,12 +243,12 @@ async def seed_database() -> None:
             demo_users.append(
                 User(
                     username=username,
-                    full_name=f"Eco User {index:03d}",
+                    full_name=f"Эко пользователь {index:03d}",
                     email=f"{username}@usue.app",
                     password_hash=hash_password("userpass"),
                     role=UserRole.CUSTOMER.value,
                     phone=f"+7 900 100-{index:04d}",
-                    address="Ekaterinburg",
+                    address="Екатеринбург",
                 )
             )
 
@@ -262,12 +262,12 @@ async def seed_database() -> None:
             demo_admins.append(
                 User(
                     username=username,
-                    full_name=f"Admin {index}",
+                    full_name=f"Админ {index}",
                     email=f"{username}@usue.app",
                     password_hash=hash_password(password),
                     role=UserRole.ADMIN.value,
                     phone=f"+7 900 200-{index:04d}",
-                    address="HQ office",
+                    address="Екатеринбург",
                 )
             )
 

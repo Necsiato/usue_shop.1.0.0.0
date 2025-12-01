@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../config/app_config.dart';
-import '../models/user_model.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/user_model.dart';
 import 'http_client_factory.dart';
 
 class AdminService {
@@ -19,7 +19,9 @@ class AdminService {
     final response = await _client.get(AppConfig.uri(path));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List<dynamic>;
-      return data.map((item) => UserModel.fromJson(item as Map<String, dynamic>)).toList();
+      return data
+          .map((item) => UserModel.fromJson(item as Map<String, dynamic>))
+          .toList();
     }
     throw Exception('Не удалось загрузить пользователей');
   }
@@ -27,21 +29,29 @@ class AdminService {
   Future<UserModel> updateCredentials({
     required String userId,
     String? username,
+    String? email,
     String? password,
     String? phone,
+    String? role,
   }) async {
     if (!AppConfig.useBackend) {
-      throw Exception('Backend недоступен');
+      throw Exception('Backend отключён');
     }
     final payload = <String, dynamic>{};
     if (username != null && username.isNotEmpty) {
       payload['username'] = username;
+    }
+    if (email != null && email.isNotEmpty) {
+      payload['email'] = email;
     }
     if (password != null && password.isNotEmpty) {
       payload['password'] = password;
     }
     if (phone != null && phone.isNotEmpty) {
       payload['phone'] = phone;
+    }
+    if (role != null && role.isNotEmpty) {
+      payload['role'] = role;
     }
     final response = await _client.patch(
       AppConfig.uri('/admin/users/$userId'),
@@ -53,5 +63,12 @@ class AdminService {
       return UserModel.fromJson(data);
     }
     throw Exception('Не удалось обновить пользователя');
+  }
+
+  Future<UserModel> updateRole({
+    required String userId,
+    required String role,
+  }) async {
+    return updateCredentials(userId: userId, role: role);
   }
 }

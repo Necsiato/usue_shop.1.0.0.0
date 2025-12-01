@@ -1,8 +1,8 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import '../config/app_config.dart';
+import 'package:usue_app_front/config/app_config.dart';
 
 class MediaImage extends StatelessWidget {
   const MediaImage({

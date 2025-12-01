@@ -1,4 +1,4 @@
-import 'product_model.dart';
+﻿import 'product_model.dart';
 
 class CartItem {
   CartItem({required this.product, this.quantity = 1});

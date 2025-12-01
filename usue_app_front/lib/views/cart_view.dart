@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/cart_controller.dart';
-import '../controllers/order_controller.dart';
-import '../utils/currency_formatter.dart';
-import '../widgets/app_scaffold.dart';
-import '../widgets/media_image.dart';
+import 'package:usue_app_front/controllers/cart_controller.dart';
+import 'package:usue_app_front/utils/currency_formatter.dart';
+import 'package:usue_app_front/widgets/app_scaffold.dart';
+import 'package:usue_app_front/widgets/media_image.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
@@ -15,15 +14,15 @@ class CartView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Корзина',
-      child: Consumer2<CartController, OrderController>(
-        builder: (context, cart, orders, _) {
+      child: Consumer<CartController>(
+        builder: (context, cart, _) {
           if (cart.isEmpty) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
-                const Text('Корзина пока пуста'),
+                const Text('Корзина пуста'),
                 const SizedBox(height: 12),
-                FilledButton(
+                TextButton(
                   onPressed: () => GoRouter.of(context).go('/'),
                   child: const Text('Перейти в каталог'),
                 ),
@@ -31,121 +30,102 @@ class CartView extends StatelessWidget {
             );
           }
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...cart.items.map(
-                (item) => Card(
-                  child: ListTile(
-                    onTap: () => GoRouter.of(context).go('/product/${item.product.id}'),
-                    leading: SizedBox(
-                      width: 64,
-                      height: 64,
-                      child: MediaImage(
-                        source: item.product.imageUrls.isNotEmpty ? item.product.imageUrls.first : '',
-                        fit: BoxFit.cover,
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: cart.items.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final item = cart.items[index];
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: MediaImage(
+                              source: item.product.imageUrls.isNotEmpty
+                                  ? item.product.imageUrls.first
+                                  : '',
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item.product.title,
+                                    style: Theme.of(context).textTheme.titleMedium),
+                                const SizedBox(height: 4),
+                                Text(formatCurrency(item.product.price)),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () => cart.updateQuantity(
+                                  item.product.id,
+                                  item.quantity - 1,
+                                ),
+                                icon: const Icon(Icons.remove),
+                              ),
+                              Text('${item.quantity}'),
+                              IconButton(
+                                onPressed: () => cart.updateQuantity(
+                                  item.product.id,
+                                  item.quantity + 1,
+                                ),
+                                icon: const Icon(Icons.add),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 12),
+                          Text(formatCurrency(item.subtotal)),
+                          IconButton(
+                            tooltip: 'Удалить',
+                            onPressed: () => cart.removeProduct(item.product.id),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ],
                       ),
                     ),
-                    title: Text(item.product.title),
-                    subtitle: Text(formatCurrency(item.product.price)),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () => cart.updateQuantity(
-                            item.product.id,
-                            (item.quantity - 1).clamp(1, 99),
-                          ),
-                          icon: const Icon(Icons.remove),
-                        ),
-                        Text('${item.quantity}'),
-                        IconButton(
-                          onPressed: () => cart.updateQuantity(
-                            item.product.id,
-                            (item.quantity + 1).clamp(1, 99),
-                          ),
-                          icon: const Icon(Icons.add),
-                        ),
-                        IconButton(
-                          onPressed: () => cart.removeProduct(item.product.id),
-                          icon: const Icon(Icons.delete_outline),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  );
+                },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Итого (без доставки)'),
-                      Text('Сумма: ${formatCurrency(cart.total)}'),
-                    ],
-                  ),
-                  FilledButton(
-                    onPressed:
-                        orders.isSaving ? null : () => _showPaymentDialog(context, cart, orders),
-                    child: orders.isSaving
-                        ? const SizedBox(
-                            height: 18,
-                            width: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Оформить заказ'),
+                  Text('Итого', style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    formatCurrency(cart.total),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Theme.of(context).colorScheme.primary),
                   ),
                 ],
+              ),
+              const SizedBox(height: 12),
+              FilledButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Заказ оформлен (демо)')),
+                  );
+                  cart.clear();
+                },
+                child: const Text('Оформить заказ'),
               ),
             ],
           );
         },
-      ),
-    );
-  }
-
-  Future<void> _showPaymentDialog(
-    BuildContext context,
-    CartController cart,
-    OrderController orders,
-  ) async {
-    await showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Оформление заказа'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Сумма к оплате: ${formatCurrency(cart.total)}'),
-            const SizedBox(height: 12),
-            const Text(
-              'Оплата производится при получении. Наш менеджер свяжется с вами для уточнения деталей.',
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Отмена'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final order = await orders.createOrder(cart.items);
-              cart.clear();
-              if (context.mounted) {
-                Navigator.of(context).pop();
-                GoRouter.of(context).go('/profile');
-                if (order != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Заказ ${order.id} оформлен')),
-                  );
-                }
-              }
-            },
-            child: const Text('Подтвердить'),
-          ),
-        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:usue_app_front/utils/currency_formatter.dart';
 
-import '../models/service_model.dart';
+import 'package:usue_app_front/models/service_model.dart';
 import 'media_image.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -11,6 +12,7 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translated = _translate(service);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -28,16 +30,19 @@ class ServiceCard extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 12),
-            Text(service.title, style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              translated.title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 6),
             Text(
-              service.description,
+              translated.description,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 12),
             Text(
-              '${service.price.toStringAsFixed(0)} ₽',
+              formatCurrency(service.price),
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -48,7 +53,7 @@ class ServiceCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: onAdd,
                   icon: const Icon(Icons.add_shopping_cart),
-                  label: const Text('В корзину'),
+                  label: const Text('Добавить в корзину'),
                 ),
               ],
             ),
@@ -63,9 +68,24 @@ class ServiceCard extends StatelessWidget {
       case 'in_progress':
         return 'В работе';
       case 'completed':
-        return 'Завершена';
+        return 'Выполнено';
       default:
-        return 'Новая';
+        return 'Доступно';
     }
   }
+
+  _ServiceText _translate(ServiceModel svc) {
+    var title = svc.title;
+    var desc = svc.description;
+    title = title.replaceAll('Smart Home', 'Умный дом');
+    title = title.replaceAll('Urban', 'Городской');
+    desc = desc.replaceAll('training', 'обучение');
+    return _ServiceText(title: title, description: desc);
+  }
+}
+
+class _ServiceText {
+  const _ServiceText({required this.title, required this.description});
+  final String title;
+  final String description;
 }

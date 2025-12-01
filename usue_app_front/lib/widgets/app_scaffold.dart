@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/auth_controller.dart';
+import 'package:usue_app_front/controllers/auth_controller.dart';
+import 'package:usue_app_front/config/app_config.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,
     required this.child,
-    this.title = 'USUE eco shop',
+    this.title = AppConfig.brandTitle,
     this.actions,
     this.floatingActionButton,
   });
@@ -24,6 +25,16 @@ class AppScaffold extends StatelessWidget {
     final router = GoRouter.of(context);
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 78,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: CircleAvatar(
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(0.18),
+            child: const Icon(Icons.eco_outlined, color: Colors.white),
+          ),
+        ),
         title: Text(title),
         actions: [
           TextButton(
@@ -57,10 +68,7 @@ class AppScaffold extends StatelessWidget {
             ),
           const SizedBox(width: 8),
           if (auth.isLoggedIn) ...[
-            OutlinedButton(
-              onPressed: auth.logout,
-              child: const Text('Выйти'),
-            ),
+            OutlinedButton(onPressed: auth.logout, child: const Text('Выйти')),
           ] else ...[
             TextButton(
               onPressed: () => router.go('/register'),
@@ -81,11 +89,42 @@ class AppScaffold extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
+              constraints: const BoxConstraints(maxWidth: 1400),
               child: child,
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: const _ContactsFooter(),
+    );
+  }
+}
+
+class _ContactsFooter extends StatelessWidget {
+  const _ContactsFooter();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: const Color(0xFF1D1F23),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Text(
+            AppConfig.brandTitle,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+          Text(
+            'Денис Клейн Романович · +7 982 647-29-65',
+            style: TextStyle(color: Colors.white70),
+          ),
+          Text(
+            'deniskleinnn@gmail.com',
+            style: TextStyle(color: Colors.white70),
+          ),
+        ],
       ),
     );
   }

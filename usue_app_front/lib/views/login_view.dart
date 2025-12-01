@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/auth_controller.dart';
-import '../widgets/app_scaffold.dart';
+import 'package:usue_app_front/controllers/auth_controller.dart';
+import 'package:usue_app_front/utils/validators.dart';
+import 'package:usue_app_front/widgets/app_scaffold.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -27,8 +28,7 @@ class _LoginViewState extends State<LoginView> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     final auth = context.read<AuthController>();
-    final success =
-        await auth.login(login: _loginCtrl.text.trim(), password: _passwordCtrl.text.trim());
+    final success = await auth.login(login: _loginCtrl.text.trim(), password: _passwordCtrl.text.trim());
     if (success && mounted) {
       GoRouter.of(context).go('/');
     }
@@ -52,21 +52,23 @@ class _LoginViewState extends State<LoginView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Войти в аккаунт',
+                        'Добро пожаловать, войдите в аккаунт',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _loginCtrl,
                         decoration: const InputDecoration(labelText: 'Логин'),
-                        validator: (value) => value == null || value.isEmpty ? 'Введите логин' : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.login(value),
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _passwordCtrl,
                         obscureText: true,
                         decoration: const InputDecoration(labelText: 'Пароль'),
-                        validator: (value) => value == null || value.isEmpty ? 'Введите пароль' : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.password(value),
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
@@ -90,10 +92,10 @@ class _LoginViewState extends State<LoginView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Еще нет аккаунта?'),
+                          const Text('Нет аккаунта?'),
                           TextButton(
                             onPressed: () => GoRouter.of(context).go('/register'),
-                            child: const Text('Создать'),
+                            child: const Text('Зарегистрироваться'),
                           ),
                         ],
                       ),

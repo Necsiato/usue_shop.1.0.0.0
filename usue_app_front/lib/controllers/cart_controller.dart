@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-import '../models/cart_item.dart';
-import '../models/product_model.dart';
-import '../models/service_model.dart';
+import 'package:usue_app_front/models/cart_item.dart';
+import 'package:usue_app_front/models/product_model.dart';
+import 'package:usue_app_front/models/service_model.dart';
 
 class CartController extends ChangeNotifier {
   final Map<String, List<CartItem>> _storage = {};
@@ -51,7 +51,7 @@ class CartController extends ChangeNotifier {
       imageUrls: [
         if (service.imageUrl.isNotEmpty) service.imageUrl,
       ],
-      specs: const {'Тип': 'Услуга'},
+      specs: const {'Услуга': 'Добавлено из сервиса'},
     );
     addProduct(product);
   }

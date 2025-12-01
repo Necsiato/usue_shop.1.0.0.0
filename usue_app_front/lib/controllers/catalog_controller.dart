@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
-import '../config/app_config.dart';
-import '../models/category_model.dart';
-import '../models/product_model.dart';
-import '../models/service_model.dart';
-import '../sample_data/sample_catalog.dart';
-import '../services/api_service.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/category_model.dart';
+import 'package:usue_app_front/models/product_model.dart';
+import 'package:usue_app_front/models/service_model.dart';
+import 'package:usue_app_front/sample_data/sample_catalog.dart';
+import 'package:usue_app_front/services/api_service.dart';
 
 class CatalogController extends ChangeNotifier {
   CatalogController(this._apiService);
@@ -84,7 +84,7 @@ class CatalogController extends ChangeNotifier {
       imageUrls: [
         if (service.imageUrl.isNotEmpty) service.imageUrl,
       ],
-      specs: const {'Тип': 'Услуга'},
+      specs: const {'Услуга': 'Добавлено из сервиса'},
     );
     _localCreatedProducts.add(product);
     notifyListeners();

@@ -2,38 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:usue_app_front/controllers/catalog_controller.dart';
-import 'package:usue_app_front/models/category_model.dart';
 import 'package:usue_app_front/widgets/app_scaffold.dart';
 import 'package:usue_app_front/widgets/product_card.dart';
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({super.key, required this.categoryId});
-
-  final String categoryId;
+class OffersView extends StatelessWidget {
+  const OffersView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Каталог',
+      title: 'Лучшие предложения',
       child: Consumer<CatalogController>(
         builder: (context, catalog, _) {
-          if (catalog.isLoading && catalog.categories.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final CategoryModel category;
-          try {
-            category = catalog.categories.firstWhere((cat) => cat.id == categoryId);
-          } catch (_) {
-            return const Text('Категория не найдена');
-          }
-          final products = catalog.productsByCategory(categoryId);
+          final products = [...catalog.products]..sort((a, b) => a.price.compareTo(b.price));
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(category.title, style: Theme.of(context).textTheme.headlineSmall),
-              const SizedBox(height: 6),
-              Text(category.description),
-              const SizedBox(height: 20),
+              Text('Топ товаров и сервисов', style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 12),
               LayoutBuilder(
                 builder: (context, constraints) {
                   final crossAxisCount = constraints.maxWidth > 1100
@@ -48,14 +34,12 @@ class CategoryView extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
-                      childAspectRatio: 0.72,
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
+                      childAspectRatio: 0.72,
                     ),
                     itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      return ProductCard(product: products[index]);
-                    },
+                    itemBuilder: (context, index) => ProductCard(product: products[index]),
                   );
                 },
               ),

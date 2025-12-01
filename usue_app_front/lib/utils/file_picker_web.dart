@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter, deprecated_member_use
+﻿// ignore_for_file: avoid_web_libraries_in_flutter, deprecated_member_use
 
 import 'dart:async';
 import 'dart:html' as html;
@@ -16,12 +16,12 @@ Future<String?> pickPngDataUrl() {
     }
     final file = files.first;
     if (file.type != 'image/png') {
-      completer.completeError('Выберите PNG изображение');
+      completer.completeError('Р’С‹Р±РµСЂРёС‚Рµ PNG РёР·РѕР±СЂР°Р¶РµРЅРёРµ');
       return;
     }
     final reader = html.FileReader();
     reader.readAsDataUrl(file);
-    reader.onError.listen((error) => completer.completeError('Ошибка чтения файла'));
+    reader.onError.listen((error) => completer.completeError('РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°'));
     reader.onLoadEnd.listen((event) {
       completer.complete(reader.result as String?);
     });

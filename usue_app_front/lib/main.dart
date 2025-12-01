@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +73,7 @@ class _UsueAppState extends State<UsueApp> {
         ),
       ],
       child: MaterialApp.router(
-        title: 'USUE eco shop',
+        title: 'Магазин эко товаров',
         theme: buildAppTheme(),
         routerConfig: router,
         debugShowCheckedModeBanner: false,

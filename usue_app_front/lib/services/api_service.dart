@@ -1,12 +1,12 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../config/app_config.dart';
-import '../models/category_model.dart';
-import '../models/product_model.dart';
-import '../models/service_model.dart';
-import '../sample_data/sample_catalog.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/category_model.dart';
+import 'package:usue_app_front/models/product_model.dart';
+import 'package:usue_app_front/models/service_model.dart';
+import 'package:usue_app_front/sample_data/sample_catalog.dart';
 import 'http_client_factory.dart';
 
 class ApiService {
@@ -48,7 +48,7 @@ class ApiService {
           )
           .toList();
     }
-    throw Exception('Не удалось загрузить категории');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РєР°С‚РµРіРѕСЂРёРё');
   }
 
   Future<List<ProductModel>> fetchProducts() async {
@@ -60,7 +60,7 @@ class ApiService {
       final data = jsonDecode(response.body) as List<dynamic>;
       return data.map((json) => _mapBackendProduct(json as Map<String, dynamic>)).toList();
     }
-    throw Exception('Не удалось загрузить товары');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С‚РѕРІР°СЂС‹');
   }
 
   ProductModel _mapBackendProduct(Map<String, dynamic> item) {
@@ -101,7 +101,7 @@ class ApiService {
           )
           .toList();
     }
-    throw Exception('Не удалось загрузить услуги');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СѓСЃР»СѓРіРё');
   }
 
   Future<ProductModel> createProduct(ProductModel product) async {
@@ -126,7 +126,7 @@ class ApiService {
     if (response.statusCode == 201) {
       return _mapBackendProduct(jsonDecode(response.body) as Map<String, dynamic>);
     }
-    throw Exception('Не удалось создать товар');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ С‚РѕРІР°СЂ');
   }
 
   Future<ServiceModel> createService(ServiceModel payload) async {
@@ -153,7 +153,7 @@ class ApiService {
         categoryId: (data['category_id'] as String?)?.replaceAll('-', '_') ?? payload.categoryId,
       );
     }
-    throw Exception('Не удалось создать услугу');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ СѓСЃР»СѓРіСѓ');
   }
 
   Future<ServiceModel> updateService(ServiceModel payload) async {
@@ -179,7 +179,7 @@ class ApiService {
         categoryId: (data['category_id'] as String?)?.replaceAll('-', '_') ?? payload.categoryId,
       );
     }
-    throw Exception('Не удалось обновить услугу');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ РѕР±РЅРѕРІРёС‚СЊ СѓСЃР»СѓРіСѓ');
   }
 
   Future<List<String>> _normalizeImages(List<String> sources) async {
@@ -216,6 +216,6 @@ class ApiService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return data['url'] as String;
     }
-    throw Exception('Не удалось загрузить изображение');
+    throw Exception('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ');
   }
 }

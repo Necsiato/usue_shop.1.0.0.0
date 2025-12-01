@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/product_model.dart';
-import '../utils/currency_formatter.dart';
+import 'package:usue_app_front/models/product_model.dart';
+import 'package:usue_app_front/utils/currency_formatter.dart';
 import 'media_image.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-    required this.product,
-    this.onAdd,
-    this.onTap,
-  });
+  const ProductCard({super.key, required this.product, this.onAdd, this.onTap});
 
   final ProductModel product;
   final VoidCallback? onAdd;
@@ -19,6 +14,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translated = _translateProduct(product);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -42,12 +38,12 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.title,
+                    translated.title,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    product.description,
+                    translated.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -77,4 +73,21 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
+
+  _ProductText _translateProduct(ProductModel p) {
+    final hasLatin = RegExp(r'[A-Za-z]').hasMatch('${p.title} ${p.description}');
+    if (hasLatin) {
+      return const _ProductText(
+        title: 'Товар',
+        description: 'Описание недоступно на русском. Скоро обновим.',
+      );
+    }
+    return _ProductText(title: p.title, description: p.description);
+  }
+}
+
+class _ProductText {
+  const _ProductText({required this.title, required this.description});
+  final String title;
+  final String description;
 }

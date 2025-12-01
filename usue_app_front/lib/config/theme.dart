@@ -1,21 +1,22 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'app_config.dart';
 
 ThemeData buildAppTheme() {
-  final primary = const Color(0xFFA4FF4A); // салатовый акцент
-  final accent = const Color(0xFF5CFF93);
-  final background = const Color(0xFF0F1115);
-  final surface = const Color(0xFF1A1C21);
+  const primary = Color(0xFFA4FF4A);
+  const accent = Color(0xFF5CFF93);
+  const background = Color(0xFF0F1115);
+  const surface = Color(0xFF1A1C21);
+  const textColor = Color(0xFFE5E7EB);
 
   final textTheme = Typography.englishLike2021.apply(
-    displayColor: Colors.white,
-    bodyColor: Colors.white,
+    displayColor: textColor,
+    bodyColor: textColor,
     fontSizeFactor: AppConfig.baseFontSize / 14,
   );
 
   return ThemeData(
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: primary,
       secondary: accent,
       surface: surface,
@@ -27,26 +28,26 @@ ThemeData buildAppTheme() {
     textTheme: textTheme.copyWith(
       bodyMedium: textTheme.bodyMedium?.copyWith(
         fontSize: AppConfig.baseFontSize,
-        color: Colors.white,
+        color: textColor,
       ),
       bodyLarge: textTheme.bodyLarge?.copyWith(
         fontSize: AppConfig.baseFontSize + 1,
-        color: Colors.white,
+        color: textColor,
       ),
       titleMedium: textTheme.titleMedium?.copyWith(
-        color: Colors.white,
+        color: textColor,
         fontWeight: FontWeight.w600,
       ),
       titleLarge: textTheme.titleLarge?.copyWith(
-        color: Colors.white,
+        color: textColor,
         fontSize: AppConfig.baseFontSize + 6,
         fontWeight: FontWeight.bold,
       ),
-      labelLarge: textTheme.labelLarge?.copyWith(color: Colors.white),
+      labelLarge: textTheme.labelLarge?.copyWith(color: textColor),
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: surface,
-      foregroundColor: Colors.white,
+      foregroundColor: textColor,
       elevation: 0,
       centerTitle: false,
       titleTextStyle: textTheme.titleLarge,
@@ -56,20 +57,20 @@ ThemeData buildAppTheme() {
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       margin: const EdgeInsets.symmetric(vertical: 8),
-      shadowColor: primary.withValues(alpha: 0.12),
+      shadowColor: primary.withOpacity(0.12),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: const Color(0xFF16181E),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.12)),
+        borderSide: BorderSide(color: textColor.withOpacity(0.12)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: primary, width: 1.4),
       ),
-      labelStyle: const TextStyle(color: Colors.white),
+      labelStyle: const TextStyle(color: textColor),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -90,24 +91,24 @@ ThemeData buildAppTheme() {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: primary,
-        side: BorderSide(color: primary.withValues(alpha: 0.6)),
+        side: BorderSide(color: primary.withOpacity(0.6)),
         textStyle: textTheme.labelLarge?.copyWith(fontSize: AppConfig.baseFontSize),
       ),
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: primary,
       foregroundColor: Colors.black,
     ),
     chipTheme: ChipThemeData(
       backgroundColor: const Color(0xFF1F2229),
-      selectedColor: primary.withValues(alpha: 0.18),
-      labelStyle: const TextStyle(color: Colors.white),
+      selectedColor: primary.withOpacity(0.18),
+      labelStyle: const TextStyle(color: textColor),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: const Color(0xFF1C1F26),
-      contentTextStyle: textTheme.bodyMedium?.copyWith(color: Colors.white),
+      contentTextStyle: textTheme.bodyMedium?.copyWith(color: textColor),
       behavior: SnackBarBehavior.floating,
     ),
   );

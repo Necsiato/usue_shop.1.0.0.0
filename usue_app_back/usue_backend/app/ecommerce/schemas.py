@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 from pydantic.config import ConfigDict
 
-from app.core.enums import OrderStatus
+from app.core.enums import OrderStatus, UserRole
 
 
 class CategoryOut(BaseModel):
@@ -68,6 +68,8 @@ class UserUpdateRequest(BaseModel):
     username: Optional[str] = None
     password: Optional[str] = None
     phone: Optional[str] = None
+    email: Optional[str] = None
+    role: Optional[UserRole] = None
 
 
 class CartItemPayload(BaseModel):

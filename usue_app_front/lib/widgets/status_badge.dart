@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
-import '../models/order_model.dart';
+import 'package:usue_app_front/models/order_model.dart';
 
 class StatusBadge extends StatelessWidget {
   const StatusBadge(this.status, {super.key});
@@ -24,7 +24,7 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(

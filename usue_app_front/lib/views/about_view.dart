@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/app_scaffold.dart';
+import 'package:usue_app_front/widgets/app_scaffold.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -8,10 +8,10 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const AppScaffold(
-      title: 'О проекте',
+      title: 'О магазине',
       child: Text(
-        'USUE eco shop — демо витрина. Здесь можно просматривать товары без авторизации, '
-        'а корзина, профиль, заказы и админ-панель доступны после входа.',
+        'Магазин эко товаров — это витрина демо-товаров и сервисов. Мы показываем, как выглядит каталог, '
+        'оформление заказа и личный кабинет в рамках учебного проекта.',
       ),
     );
   }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/auth_controller.dart';
-import '../widgets/app_scaffold.dart';
+import 'package:usue_app_front/controllers/auth_controller.dart';
+import 'package:usue_app_front/utils/validators.dart';
+import 'package:usue_app_front/widgets/app_scaffold.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -16,15 +17,15 @@ class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final _loginCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
 
   @override
   void dispose() {
     _loginCtrl.dispose();
     _emailCtrl.dispose();
-    _passwordCtrl.dispose();
     _phoneCtrl.dispose();
+    _passwordCtrl.dispose();
     super.dispose();
   }
 
@@ -48,7 +49,7 @@ class _RegisterViewState extends State<RegisterView> {
       title: 'Регистрация',
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 420),
+          constraints: const BoxConstraints(maxWidth: 460),
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -57,37 +58,42 @@ class _RegisterViewState extends State<RegisterView> {
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Создать аккаунт', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 12),
-                      TextFormField(
-                        controller: _phoneCtrl,
-                        decoration: const InputDecoration(labelText: 'Телефон'),
-                        validator: (value) => value == null || value.isEmpty ? 'Введите телефон' : null,
+                      Text(
+                        'Создать аккаунт',
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _loginCtrl,
                         decoration: const InputDecoration(labelText: 'Логин'),
-                        validator: (value) => value == null || value.isEmpty ? 'Введите логин' : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.login(value),
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _emailCtrl,
                         decoration: const InputDecoration(labelText: 'Email'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) return 'Введите email';
-                          if (!value.contains('@')) return 'Email выглядит некорректно';
-                          return null;
-                        },
+                        keyboardType: TextInputType.emailAddress,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.email(value),
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: _phoneCtrl,
+                        decoration: const InputDecoration(labelText: 'Телефон'),
+                        keyboardType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.phone(value),
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _passwordCtrl,
                         obscureText: true,
                         decoration: const InputDecoration(labelText: 'Пароль'),
-                        validator: (value) =>
-                            value == null || value.length < 6 ? 'Минимум 6 символов' : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => Validators.password(value),
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
@@ -108,9 +114,15 @@ class _RegisterViewState extends State<RegisterView> {
                         Text(auth.error!, style: const TextStyle(color: Colors.red)),
                       ],
                       const SizedBox(height: 16),
-                      TextButton(
-                        onPressed: () => GoRouter.of(context).go('/login'),
-                        child: const Text('Уже есть аккаунт? Войти'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Уже есть аккаунт?'),
+                          TextButton(
+                            onPressed: () => GoRouter.of(context).go('/login'),
+                            child: const Text('Войти'),
+                          ),
+                        ],
                       ),
                     ],
                   ),

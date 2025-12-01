@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
-import '../models/cart_item.dart';
-import '../models/order_model.dart';
-import '../models/user_model.dart';
-import '../services/order_service.dart';
+import 'package:usue_app_front/models/cart_item.dart';
+import 'package:usue_app_front/models/order_model.dart';
+import 'package:usue_app_front/models/user_model.dart';
+import 'package:usue_app_front/services/order_service.dart';
 
 class OrderController extends ChangeNotifier {
   OrderController(this._service);

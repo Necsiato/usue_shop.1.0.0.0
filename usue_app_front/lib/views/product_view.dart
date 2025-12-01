@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/auth_controller.dart';
-import '../controllers/cart_controller.dart';
-import '../controllers/catalog_controller.dart';
-import '../utils/currency_formatter.dart';
-import '../widgets/app_scaffold.dart';
-import '../widgets/media_image.dart';
+import 'package:usue_app_front/controllers/auth_controller.dart';
+import 'package:usue_app_front/controllers/cart_controller.dart';
+import 'package:usue_app_front/controllers/catalog_controller.dart';
+import 'package:usue_app_front/utils/currency_formatter.dart';
+import 'package:usue_app_front/widgets/app_scaffold.dart';
+import 'package:usue_app_front/widgets/media_image.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({super.key, required this.productId});
@@ -26,7 +27,20 @@ class ProductView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(product.title, style: Theme.of(context).textTheme.headlineSmall),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => GoRouter.of(context).pop(),
+                    icon: const Icon(Icons.arrow_back),
+                    tooltip: 'Назад',
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    product.title,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ],
+              ),
               const SizedBox(height: 12),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +49,9 @@ class ProductView extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
                       child: MediaImage(
-                        source: product.imageUrls.isNotEmpty ? product.imageUrls.first : '',
+                        source: product.imageUrls.isNotEmpty
+                            ? product.imageUrls.first
+                            : '',
                         height: 400,
                         fit: BoxFit.cover,
                       ),
@@ -50,10 +66,10 @@ class ProductView extends StatelessWidget {
                         const SizedBox(height: 16),
                         Text(
                           formatCurrency(product.price),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                         const SizedBox(height: 16),
                         FilledButton.icon(
@@ -61,21 +77,28 @@ class ProductView extends StatelessWidget {
                             if (!auth.isLoggedIn) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Авторизуйтесь, чтобы добавить в корзину'),
+                                  content: Text(
+                                    'Войдите, чтобы добавить товар в корзину',
+                                  ),
                                 ),
                               );
                               return;
                             }
                             cart.addProduct(product);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Добавлено в корзину')),
+                              const SnackBar(
+                                content: Text('Товар добавлен в корзину'),
+                              ),
                             );
                           },
                           icon: const Icon(Icons.add_shopping_cart),
                           label: const Text('Добавить в корзину'),
                         ),
                         const SizedBox(height: 24),
-                        Text('Характеристики', style: Theme.of(context).textTheme.titleLarge),
+                        Text(
+                          'Характеристики',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                         const SizedBox(height: 12),
                         ...product.specs.entries.map(
                           (entry) => ListTile(

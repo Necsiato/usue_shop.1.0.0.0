@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
-import '../config/app_config.dart';
-import '../models/order_model.dart';
-import '../models/service_model.dart';
-import '../models/user_model.dart';
-import '../sample_data/sample_catalog.dart';
-import '../services/admin_service.dart';
+import 'package:usue_app_front/config/app_config.dart';
+import 'package:usue_app_front/models/order_model.dart';
+import 'package:usue_app_front/models/service_model.dart';
+import 'package:usue_app_front/models/user_model.dart';
+import 'package:usue_app_front/sample_data/sample_catalog.dart';
+import 'package:usue_app_front/services/admin_service.dart';
 
 class AdminController extends ChangeNotifier {
   AdminController(this._adminService);
@@ -28,7 +28,9 @@ class AdminController extends ChangeNotifier {
 
   Future<void> loadUsers() async {
     if (!AppConfig.useBackend) {
-      _customers = SampleCatalog.demoUsers.where((user) => !user.isAdmin).toList();
+      _customers = SampleCatalog.demoUsers
+          .where((user) => !user.isAdmin)
+          .toList();
       _admins = SampleCatalog.demoUsers.where((user) => user.isAdmin).toList();
       notifyListeners();
       return;
@@ -51,6 +53,7 @@ class AdminController extends ChangeNotifier {
   Future<void> updateUserCredentials({
     required UserModel user,
     String? username,
+    String? email,
     String? password,
     String? phone,
   }) async {
@@ -59,19 +62,44 @@ class AdminController extends ChangeNotifier {
       final updated = await _adminService.updateCredentials(
         userId: user.id,
         username: username,
+        email: email,
         password: password,
         phone: phone,
       );
-      if (updated.isAdmin) {
-        _admins = _admins.map((item) => item.id == updated.id ? updated : item).toList();
-      } else {
-        _customers = _customers.map((item) => item.id == updated.id ? updated : item).toList();
-      }
-      _infoMessage = 'Профиль пользователя обновлён';
+      _applyUpdatedUser(updated);
+      _infoMessage = 'Данные пользователя обновлены';
     } catch (e) {
-      _infoMessage = 'Ошибка при обновлении профиля: $e';
+      _infoMessage = 'Ошибка при обновлении пользователя: $e';
     }
     notifyListeners();
+  }
+
+  Future<void> updateUserRole({
+    required UserModel user,
+    required bool makeAdmin,
+  }) async {
+    final newRole = makeAdmin ? 'admin' : 'user';
+    try {
+      _loadingUsers = true;
+      notifyListeners();
+      if (!AppConfig.useBackend) {
+        final updated = user.copyWith(role: newRole);
+        _applyUpdatedUser(updated);
+      } else {
+        final updated = await _adminService.updateRole(
+          userId: user.id,
+          role: newRole,
+        );
+        _applyUpdatedUser(updated);
+      }
+      _infoMessage = 'Роль обновлена';
+      await loadUsers();
+    } catch (e) {
+      _infoMessage = 'Ошибка при смене роли: $e';
+    } finally {
+      _loadingUsers = false;
+      notifyListeners();
+    }
   }
 
   void syncServices(List<ServiceModel> data) {
@@ -86,17 +114,39 @@ class AdminController extends ChangeNotifier {
 
   void addService(ServiceModel service) {
     _services = [service, ..._services];
-    _infoMessage = 'Новая услуга добавлена';
+    _infoMessage = 'Сервис добавлен';
     notifyListeners();
   }
 
   void updateService(ServiceModel updated) {
-    _services = _services.map((service) => service.id == updated.id ? updated : service).toList();
+    _services = _services
+        .map((service) => service.id == updated.id ? updated : service)
+        .toList();
     notifyListeners();
   }
 
   void clearMessage() {
     _infoMessage = null;
     notifyListeners();
+  }
+
+  void _applyUpdatedUser(UserModel updated) {
+    if (updated.isAdmin) {
+      _admins = _upsert(_admins, updated);
+      _customers = _customers.where((u) => u.id != updated.id).toList();
+    } else {
+      _customers = _upsert(_customers, updated);
+      _admins = _admins.where((u) => u.id != updated.id).toList();
+    }
+  }
+
+  List<UserModel> _upsert(List<UserModel> list, UserModel user) {
+    final idx = list.indexWhere((u) => u.id == user.id);
+    if (idx == -1) {
+      return [user, ...list];
+    }
+    final copy = [...list];
+    copy[idx] = user;
+    return copy;
   }
 }
