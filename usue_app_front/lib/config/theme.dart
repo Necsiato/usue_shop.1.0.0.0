@@ -49,8 +49,11 @@ ThemeData buildAppTheme() {
       backgroundColor: surface,
       foregroundColor: textColor,
       elevation: 0,
-      centerTitle: false,
-      titleTextStyle: textTheme.titleLarge,
+      centerTitle: true,
+      titleTextStyle: textTheme.titleLarge?.copyWith(
+        fontSize: AppConfig.baseFontSize + 14,
+        fontWeight: FontWeight.w700,
+      ),
     ),
     cardTheme: CardThemeData(
       color: surface,

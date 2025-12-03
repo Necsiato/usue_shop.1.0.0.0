@@ -28,7 +28,8 @@ class _LoginViewState extends State<LoginView> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     final auth = context.read<AuthController>();
-    final success = await auth.login(login: _loginCtrl.text.trim(), password: _passwordCtrl.text.trim());
+    final success =
+        await auth.login(login: _loginCtrl.text.trim(), password: _passwordCtrl.text.trim());
     if (success && mounted) {
       GoRouter.of(context).go('/');
     }
@@ -52,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Добро пожаловать, войдите в аккаунт',
+                        'Добро пожаловать, авторизуйтесь, чтобы продолжить',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 12),
@@ -89,15 +90,18 @@ class _LoginViewState extends State<LoginView> {
                         Text(auth.error!, style: const TextStyle(color: Colors.red)),
                       ],
                       const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Нет аккаунта?'),
-                          TextButton(
-                            onPressed: () => GoRouter.of(context).go('/register'),
-                            child: const Text('Зарегистрироваться'),
-                          ),
-                        ],
+                      const SizedBox(height: 24),
+                      Center(
+                        child: Column(
+                          children: [
+                            const Text('Ещё нет аккаунта?'),
+                            const SizedBox(height: 8),
+                            FilledButton(
+                              onPressed: () => GoRouter.of(context).go('/register'),
+                              child: const Text('Зарегистрироваться'),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

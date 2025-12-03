@@ -20,12 +20,7 @@ class Validators {
     if (v.isEmpty) {
       return allowEmpty ? null : 'Введите пароль';
     }
-    if (v.length < 6) return 'Минимум 6 символов';
-    final hasLetter = RegExp(r'[A-Za-z]').hasMatch(v);
-    final hasDigit = RegExp(r'[0-9]').hasMatch(v);
-    if (!hasLetter || !hasDigit) {
-      return 'Нужны буквы и цифры';
-    }
+    if (v.length < 4) return 'Минимум 4 символа';
     return null;
   }
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import 'package:usue_app_front/controllers/auth_controller.dart';
+import 'package:usue_app_front/controllers/cart_controller.dart';
 import 'package:usue_app_front/models/product_model.dart';
 import 'package:usue_app_front/utils/currency_formatter.dart';
 import 'media_image.dart';
@@ -60,7 +63,38 @@ class ProductCard extends StatelessWidget {
                       ),
                       IconButton.outlined(
                         onPressed: onAdd ??
-                            () => GoRouter.of(context).go('/product/${product.id}'),
+                            () async {
+                              final auth = context.read<AuthController>();
+                              if (!auth.isLoggedIn) {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Доступ к корзине'),
+                                    content: const Text(
+                                      'Зарегистрируйтесь или войдите, чтобы добавлять товары.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(ctx).pop(),
+                                        child: const Text('Позже'),
+                                      ),
+                                      FilledButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                          GoRouter.of(context).go('/register');
+                                        },
+                                        child: const Text('Регистрация'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                return;
+                              }
+                              context.read<CartController>().addProduct(product);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Товар добавлен в корзину')),
+                              );
+                            },
                         icon: const Icon(Icons.add_shopping_cart_rounded),
                       ),
                     ],
